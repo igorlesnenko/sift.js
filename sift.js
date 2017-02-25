@@ -137,6 +137,10 @@
         for (var i = b.length; i--;) {
           if (~a.indexOf(comparable(get(b, i)))) return true;
         }
+      } else if (typeof b === 'object') {
+        return !!~a.findIndex(function(el) {
+            return el.toString() === b.toString()
+        });
       } else {
         return !!~a.indexOf(comparable(b));
       }

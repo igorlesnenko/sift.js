@@ -38,6 +38,18 @@
     }
   }
 
+  function comparableIn(value) {
+    if (value instanceof Date) {
+      return value.getTime();
+    } else if (value instanceof Array) {
+      return value.map(comparable);
+    } else if (typeof value === 'object') {
+      return value.toString()
+    } else {
+      return value;
+    }
+  }
+
   function get(obj, key) {
     if (obj.get) return obj.get(key);
     return obj[key];
@@ -132,17 +144,15 @@
      */
 
     $in: function(a, b) {
+      let needle = b;
+      if (!Array.isArray(b)) {
+        needle = [b];
+      }
 
-      if (b instanceof Array) {
-        for (var i = b.length; i--;) {
-          if (~a.indexOf(comparable(get(b, i)))) return true;
-        }
-      } else if (typeof b === 'object') {
+      for (let item of needle) {
         return !!~a.findIndex(function(el) {
-            return el.toString() === b.toString()
+          return comparableIn(el) === comparableIn(item)
         });
-      } else {
-        return !!~a.indexOf(comparable(b));
       }
 
       return false;
@@ -167,7 +177,7 @@
 
     $type: function(a, b) {
       return b != void 0 ? b instanceof a || b.constructor == a : false;
-     },
+    },
 
     /**
      */
@@ -409,7 +419,7 @@
     query = comparable(query);
 
     if (!query || (query.constructor.toString() !== 'Object' &&
-        query.constructor.toString().replace(/\n/g,'').replace(/ /g, '') !== 'functionObject(){[nativecode]}')) { // cross browser support
+      query.constructor.toString().replace(/\n/g,'').replace(/ /g, '') !== 'functionObject(){[nativecode]}')) { // cross browser support
       query = { $eq: query };
     }
 

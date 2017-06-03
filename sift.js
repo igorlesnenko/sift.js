@@ -35,7 +35,7 @@ var mongoose = require('mongoose');
       return value.getTime();
     } else if (value instanceof Array) {
       return value.map(comparable);
-    } else if (value instanceof mongoose.Types.ObjectId) {
+    } else if (typeof value === 'object' && mongoose.Types.ObjectId.isValid(value.toString())) {
       return value.toString();
     } else {
       return value;

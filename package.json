@@ -10,7 +10,9 @@
   },
   "license": "MIT",
   "engines": {},
-  "dependencies": {},
+  "dependencies": {
+    "mongoose": "^4.10.4"
+  },
   "typings": "./index.d.ts",
   "devDependencies": {
     "benchmark": "^1.0.0",

@@ -7,6 +7,8 @@
  * Filter JavaScript objects with mongodb queries
  */
 
+var mongoose = require('mongoose');
+
 (function() {
 
   'use strict';
@@ -33,6 +35,8 @@
       return value.getTime();
     } else if (value instanceof Array) {
       return value.map(comparable);
+    } else if (value instanceof mongoose.Types.ObjectId) {
+      return value.toString();
     } else {
       return value;
     }

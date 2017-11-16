@@ -154,9 +154,11 @@ var mongoose = require('mongoose');
       }
 
       for (let item of needle) {
-        return !!~a.findIndex(function(el) {
+        if (!!~a.findIndex(function(el) {
           return comparableIn(el) === comparableIn(item)
-        });
+        })) {
+          return true;
+        }
       }
 
       return false;
